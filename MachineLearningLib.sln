@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34009.444
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineLearningLib", "MachineLearningLib\MachineLearningLib.csproj", "{DD4B0516-D0B8-4193-959E-3DDE21E500D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLLTesterCMD", "MLLTesterCMD\MLLTesterCMD.csproj", "{F75FD48C-2E1B-4D9D-960D-DB844FD05AC7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD4B0516-D0B8-4193-959E-3DDE21E500D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD4B0516-D0B8-4193-959E-3DDE21E500D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD4B0516-D0B8-4193-959E-3DDE21E500D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD4B0516-D0B8-4193-959E-3DDE21E500D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F75FD48C-2E1B-4D9D-960D-DB844FD05AC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F75FD48C-2E1B-4D9D-960D-DB844FD05AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F75FD48C-2E1B-4D9D-960D-DB844FD05AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F75FD48C-2E1B-4D9D-960D-DB844FD05AC7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8844D5E5-05CC-48B6-93C9-7132B09C17A9}
+	EndGlobalSection
+EndGlobal
