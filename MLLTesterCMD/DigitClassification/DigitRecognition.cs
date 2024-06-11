@@ -1,4 +1,7 @@
-﻿using MachineLearningLib.NeuralNetwork;
+﻿using MachineLearningLib.Accelerators;
+using MachineLearningLib.ActivationFunctions;
+using MachineLearningLib.NeuralNetwork;
+using MachineLearningLib.WeightInitializers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +18,7 @@ namespace MLLTesterCMD
         public DigitRecognition(int imageWidth, int imageHeight)
         {
             network = NetworkHolder.Create()
+                .Use(new XavierWeightInitializer())
                 .Stack(new InputLayer(imageWidth * imageHeight))
                 .Stack(new Layer(128))
                 .Stack(new Layer(64))
@@ -43,9 +47,11 @@ namespace MLLTesterCMD
             }
         }
 
-        public void Classify(DigitData data)
+        public float[] Classify(DigitData data)
         {
-            data.Digit = GetDigitFromDigitArray(network.Calculate(Prepare(data.Data)));
+            float[] res = network.Calculate(Prepare(data.Data));
+            data.Digit = GetDigitFromDigitArray(res);
+            return res;
         }
 
         public void Save(Stream stream) => network.Save(stream);

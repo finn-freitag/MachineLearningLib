@@ -28,29 +28,22 @@ namespace MachineLearningLib.NeuralNetwork
 
         public override void Calculate()
         {
-            for (int i = 0; i < NeuronsSum.Length; i++)
+            Parallelizer(0, NeuronsSum.Length, (i) =>
             {
-                NeuronsSum[i] = 0;
-                for (int j = 0; j < PreviousLayer.NeuronsSum.Length; j++)
-                {
-                    NeuronsSum[i] += PreviousLayer.NeuronsAF[j] * Weights[i][j];
-                }
+                NeuronsSum[i] = Accelerator.DotProduct(PreviousLayer.NeuronsAF, Weights[i]);
                 NeuronsSum[i] += Biases[i];
                 NeuronsAF[i] = ActivationFunction.Evaluate(NeuronsSum[i]);
-            }
+            });
         }
 
         public override void Train(float learningRate)
         {
-            for (int i = 0; i < NeuronsSum.Length; i++)
+            Parallelizer(0, NeuronsSum.Length, (i) =>
             {
                 Errors[i] = (desiredOutputs[i] - NeuronsAF[i]) * ActivationFunction.Derivative(NeuronsSum[i]);
-                for (int j = 0; j < PreviousLayer.NeuronsSum.Length; j++)
-                {
-                    Weights[i][j] += learningRate * Errors[i] * PreviousLayer.NeuronsAF[j];
-                }
+                Weights[i] = Accelerator.Add(Weights[i], Accelerator.Multiply(learningRate * Errors[i], PreviousLayer.NeuronsAF));
                 Biases[i] += learningRate * Errors[i];
-            }
+            });
             PreviousLayer.Train(learningRate);
         }
     }

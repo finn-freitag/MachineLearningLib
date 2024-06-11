@@ -41,14 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accelerators\NoAccelerator.cs" />
     <Compile Include="ActivationFunctions\ReLU.cs" />
     <Compile Include="ActivationFunctions\Sigmoid.cs" />
+    <Compile Include="IAccelerator.cs" />
     <Compile Include="IActivationFunction.cs" />
+    <Compile Include="IWeightInitializer.cs" />
+    <Compile Include="Parallelizer.cs" />
     <Compile Include="NeuralNetwork\InputLayer.cs" />
     <Compile Include="NeuralNetwork\Layer.cs" />
     <Compile Include="NeuralNetwork\NetworkHolder.cs" />
     <Compile Include="NeuralNetwork\OutputLayer.cs" />
+    <Compile Include="Parallelizers\NoParallelizer.cs" />
+    <Compile Include="Parallelizers\ParallelForParallelizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WeightInitializers\RandomWeightInitializer.cs" />
+    <Compile Include="WeightInitializers\XavierWeightInitializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

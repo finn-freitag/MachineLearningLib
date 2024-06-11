@@ -1,4 +1,7 @@
-﻿using MachineLearningLib.ActivationFunctions;
+﻿using MachineLearningLib.Accelerators;
+using MachineLearningLib.ActivationFunctions;
+using MachineLearningLib.Parallelizers;
+using MachineLearningLib.WeightInitializers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +23,9 @@ namespace MachineLearningLib.NeuralNetwork
         public Layer PreviousLayer;
 
         public IActivationFunction ActivationFunction = new Sigmoid();
+        public IWeightInitializer WeightInitializer = new RandomWeightInitializer();
+        public IAccelerator Accelerator = new NoAccelerator();
+        public Parallelizer Parallelizer;
 
         public object Tag;
 
@@ -29,54 +35,44 @@ namespace MachineLearningLib.NeuralNetwork
             NeuronsSum = new float[neurons];
             NeuronsAF = new float[neurons];
             Errors = new float[neurons];
+            Parallelizer = NoParallelizer.Parallelizer;
         }
 
         public virtual void InitFromPreviousLayer()
         {
+            WeightInitializer.SetLayer(this);
             Weights = new float[NeuronsSum.Length][];
-            Random r = new Random();
-            for(int i = 0; i < NeuronsSum.Length; i++)
+            Parallelizer(0, NeuronsSum.Length, (i) =>
             {
                 Weights[i] = new float[PreviousLayer.NeuronsSum.Length];
-                Biases[i] = (float)r.NextDouble() * 2 - 1;
+                Biases[i] = WeightInitializer.GetInitialWeight();
                 for (int j = 0; j < PreviousLayer.NeuronsSum.Length; j++)
                 {
-                    Weights[i][j] = (float)r.NextDouble() * 2 - 1;
+                    Weights[i][j] = WeightInitializer.GetInitialWeight();
                 }
-            }
+            });
         }
 
         public virtual void Calculate()
         {
-            for(int i = 0; i < NeuronsSum.Length; i++)
+            Parallelizer(0, NeuronsSum.Length, (i) =>
             {
-                NeuronsSum[i] = 0;
-                for(int j = 0; j < PreviousLayer.NeuronsSum.Length; j++)
-                {
-                    NeuronsSum[i] += PreviousLayer.NeuronsAF[j] * Weights[i][j];
-                }
+                NeuronsSum[i] = Accelerator.DotProduct(PreviousLayer.NeuronsAF, Weights[i]);
                 NeuronsSum[i] += Biases[i];
                 NeuronsAF[i] = ActivationFunction.Evaluate(NeuronsSum[i]);
-            }
+            });
             FollowingLayer.Calculate();
         }
 
         public virtual void Train(float learningRate)
         {
-            for(int i = 0; i < NeuronsSum.Length; i++)
+            Parallelizer(0, NeuronsSum.Length, (i) =>
             {
-                Errors[i] = 0;
-                for(int j = 0; j < FollowingLayer.NeuronsSum.Length; j++)
-                {
-                    Errors[i] += FollowingLayer.Errors[j] * FollowingLayer.Weights[j][i];
-                }
+                Errors[i] = Accelerator.DotProductT(FollowingLayer.Errors, FollowingLayer.Weights, i);
                 Errors[i] *= ActivationFunction.Derivative(NeuronsSum[i]);
-                for(int j = 0; j < PreviousLayer.NeuronsSum.Length; j++)
-                {
-                    Weights[i][j] += learningRate * Errors[i] * PreviousLayer.NeuronsAF[j];
-                }
+                Weights[i] = Accelerator.Add(Weights[i], Accelerator.Multiply(learningRate * Errors[i], PreviousLayer.NeuronsAF));
                 Biases[i] += learningRate * Errors[i];
-            }
+            });
             PreviousLayer.Train(learningRate);
         }
 

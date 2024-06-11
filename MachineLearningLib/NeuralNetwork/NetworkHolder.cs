@@ -70,6 +70,9 @@ namespace MachineLearningLib.NeuralNetwork
             List<Layer> layers = new List<Layer>();
 
             IActivationFunction currentAF = null;
+            IWeightInitializer currentWI = null;
+            IAccelerator currentAC = null;
+            Parallelizer currentPL = null;
 
             public Builder(NetworkHolder nh)
             {
@@ -82,10 +85,34 @@ namespace MachineLearningLib.NeuralNetwork
                 return this;
             }
 
+            public Builder Use(IAccelerator accelerator)
+            {
+                currentAC = accelerator;
+                return this;
+            }
+
+            public Builder Use(Parallelizer parallelizer)
+            {
+                currentPL = parallelizer;
+                return this;
+            }
+
+            public Builder Use(IWeightInitializer weightInitializer)
+            {
+                currentWI = weightInitializer;
+                return this;
+            }
+
             public Builder Stack(Layer layer)
             {
                 if (currentAF != null)
                     layer.ActivationFunction = currentAF;
+                if (currentAC != null)
+                    layer.Accelerator = currentAC;
+                if (currentPL != null)
+                    layer.Parallelizer = currentPL;
+                if (currentWI != null)
+                    layer.WeightInitializer = currentWI;
 
                 layers.Add(layer);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,46 +12,29 @@ namespace MLLTesterCMD
     {
         public static void DCMain()
         {
-            string imagePath = "mnist\\t10k-images.idx3-ubyte";
-            string labelPath = "mnist\\t10k-labels.idx1-ubyte";
             string weightPath = "weights.dat";
+            string test = "testImages";
 
-            Console.WriteLine("Digit classifier:");
+            Console.WriteLine("Digit Classifier:");
             Console.WriteLine();
 
-            Console.WriteLine("Loading dataset...");
+            Console.WriteLine("Loading weights...");
+            DigitRecognition recognizer = new DigitRecognition(28, 28);
+            recognizer.Load(new MemoryStream(File.ReadAllBytes(weightPath)));
 
-            DigitData[] data = MNistLoader.LoadFromFile(imagePath, labelPath);
-
-            DigitRecognition recognizer = new DigitRecognition(data[0].Width, data[0].Height);
-            recognizer.Train(data, 10, 0.1f);
-            //recognizer.Load(new MemoryStream(File.ReadAllBytes(weightPath)));
-
-            Console.WriteLine();
-            Console.WriteLine("Training done.");
-            Console.WriteLine("Saving weights...");
-            MemoryStream ms = new MemoryStream();
-            recognizer.Save(ms);
-            File.WriteAllBytes(weightPath, ms.ToArray());
-            Console.WriteLine("Started classification...");
-
-            int[] digits = new int[data.Length];
-            for (int i = 0; i < data.Length; i++)
+            foreach(string file in Directory.GetFiles(test))
             {
-                digits[i] = data[i].Digit;
-                data[i].Digit = -1;
+                Bitmap bmp = new Bitmap(file);
+                DigitData data = DigitClassification.ImageConverter.ToDigitData(bmp);
+                var res = recognizer.Classify(data);
+                Console.WriteLine("File: " + Path.GetFileNameWithoutExtension(file));
+                for(int i = 0; i < res.Length; i++)
+                {
+                    Console.WriteLine(i + ": " + res[i]);
+                }
+                Console.WriteLine("Digit: " + data.Digit);
+                Console.WriteLine();
             }
-
-            recognizer.Classify(data);
-
-            int correct = 0;
-            for(int i = 0; i < digits.Length; i++)
-            {
-                if (data[i].Digit == digits[i])
-                    correct++;
-            }
-
-            Console.WriteLine("Classification done: " + correct + "/" + digits.Length);
         }
     }
 }
