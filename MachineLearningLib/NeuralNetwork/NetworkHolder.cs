@@ -1,6 +1,7 @@
 ﻿using MachineLearningLib.ActivationFunctions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,30 @@ namespace MachineLearningLib.NeuralNetwork
         public static Builder Create()
         {
             return new Builder(new NetworkHolder());
+        }
+
+        public void Save(Stream stream)
+        {
+            BinaryWriter bw = new BinaryWriter(stream);
+            Layer NextLayer = inputLayer;
+            while (NextLayer != null)
+            {
+                NextLayer.Save(bw);
+                NextLayer = NextLayer.FollowingLayer;
+            }
+            bw.Dispose();
+        }
+
+        public void Load(Stream stream)
+        {
+            BinaryReader br = new BinaryReader(stream);
+            Layer NextLayer = inputLayer;
+            while (NextLayer != null)
+            {
+                NextLayer.Load(br);
+                NextLayer = NextLayer.FollowingLayer;
+            }
+            br.Dispose();
         }
 
         public float[] Calculate(float[] inputs)

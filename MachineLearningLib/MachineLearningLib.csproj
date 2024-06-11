@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivationFunctions\ReLU.cs" />
     <Compile Include="ActivationFunctions\Sigmoid.cs" />
     <Compile Include="IActivationFunction.cs" />
     <Compile Include="NeuralNetwork\InputLayer.cs" />
