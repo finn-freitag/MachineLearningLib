@@ -51,8 +51,6 @@ namespace MLLTesterCMD
                 var res = nh.Calculate(inputs[j]);
                 Console.WriteLine("[" + string.Join(",", inputs[j]) + "] => " + (res[0] + "").Replace(",", "."));
             }
-
-            Console.ReadKey();
         }
     }
 }
