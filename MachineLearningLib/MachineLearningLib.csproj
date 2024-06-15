@@ -44,6 +44,7 @@
     <Compile Include="Accelerators\NoAccelerator.cs" />
     <Compile Include="ActivationFunctions\ReLU.cs" />
     <Compile Include="ActivationFunctions\Sigmoid.cs" />
+    <Compile Include="Analysers\BenchmarkLayer.cs" />
     <Compile Include="IAccelerator.cs" />
     <Compile Include="IActivationFunction.cs" />
     <Compile Include="IWeightInitializer.cs" />

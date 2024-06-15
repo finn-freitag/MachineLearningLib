@@ -1,4 +1,5 @@
-﻿using MachineLearningLib.NeuralNetwork;
+﻿using MachineLearningLib.Analysers;
+using MachineLearningLib.NeuralNetwork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,11 @@ namespace MLLTesterCMD
     {
         public static void XORMain()
         {
+            var benchmarkLayer = new BenchmarkLayer(2);
+
             NetworkHolder nh = NetworkHolder.Create()
                 .Stack(new InputLayer(2))
-                .Stack(new Layer(2))
+                .Stack(benchmarkLayer)
                 .Stack(new OutputLayer(1))
                 .Build();
 
@@ -51,6 +54,16 @@ namespace MLLTesterCMD
                 var res = nh.Calculate(inputs[j]);
                 Console.WriteLine("[" + string.Join(",", inputs[j]) + "] => " + (res[0] + "").Replace(",", "."));
             }
+
+            Console.WriteLine();
+            Console.WriteLine("Analyse:");
+            Console.WriteLine("Duration of weight initialization (millis): " + benchmarkLayer.WeightInitializationDuration);
+            Console.WriteLine("Max 'Calculate' duration (millis): " + benchmarkLayer.MaxCalculateDurationMillis);
+            Console.WriteLine("Min 'Calculate' duration (millis): " + benchmarkLayer.MinCalculateDurationMillis);
+            Console.WriteLine("Average 'Calculate' duration (millis): " + benchmarkLayer.AverageCalculateDurationMillis);
+            Console.WriteLine("Max 'Train' duration (millis): " + benchmarkLayer.MaxTrainDurationMillis);
+            Console.WriteLine("Min 'Train' duration (millis): " + benchmarkLayer.MinTrainDurationMillis);
+            Console.WriteLine("Average 'Train' duration (millis): " + benchmarkLayer.AverageTrainDurationMillis);
         }
     }
 }
