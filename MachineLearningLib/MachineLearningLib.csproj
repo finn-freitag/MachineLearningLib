@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accelerators\NoAccelerator.cs" />
+    <Compile Include="ActivationFunctions\LeakyReLU.cs" />
+    <Compile Include="ActivationFunctions\Linear.cs" />
     <Compile Include="ActivationFunctions\ReLU.cs" />
     <Compile Include="ActivationFunctions\Sigmoid.cs" />
     <Compile Include="Analysers\BenchmarkLayer.cs" />
