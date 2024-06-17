@@ -42,10 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accelerators\NoAccelerator.cs" />
-    <Compile Include="ActivationFunctions\LeakyReLU.cs" />
-    <Compile Include="ActivationFunctions\Linear.cs" />
-    <Compile Include="ActivationFunctions\ReLU.cs" />
-    <Compile Include="ActivationFunctions\Sigmoid.cs" />
+    <Compile Include="ActivationFunctions\LeakyReLUActivation.cs" />
+    <Compile Include="ActivationFunctions\LinearActivation.cs" />
+    <Compile Include="ActivationFunctions\ReLUActivation.cs" />
+    <Compile Include="ActivationFunctions\SigmoidActivation.cs" />
+    <Compile Include="ActivationFunctions\TanhActivation.cs" />
     <Compile Include="Analysers\BenchmarkLayer.cs" />
     <Compile Include="IAccelerator.cs" />
     <Compile Include="IActivationFunction.cs" />

@@ -6,22 +6,17 @@ using System.Threading.Tasks;
 
 namespace MachineLearningLib.ActivationFunctions
 {
-    public class ReLU : IActivationFunction
+    public class SigmoidActivation : IActivationFunction
     {
         public float Derivative(float x)
         {
-            if (x < 0)
-                return 0;
-            else
-                return 1;
+            var sigmoid = Evaluate(x);
+            return sigmoid * (1 - sigmoid);
         }
 
         public float Evaluate(float x)
         {
-            if (x < 0)
-                return 0;
-            else
-                return x;
+            return 1 / (1 + (float)Math.Exp(-x));
         }
     }
 }

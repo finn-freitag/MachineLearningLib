@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MachineLearningLib.ActivationFunctions
 {
-    public class Linear : IActivationFunction
+    public class LinearActivation : IActivationFunction
     {
         public float Derivative(float x)
         {

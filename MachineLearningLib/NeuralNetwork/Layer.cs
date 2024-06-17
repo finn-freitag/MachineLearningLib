@@ -22,7 +22,7 @@ namespace MachineLearningLib.NeuralNetwork
         public Layer FollowingLayer;
         public Layer PreviousLayer;
 
-        public IActivationFunction ActivationFunction = new Sigmoid();
+        public IActivationFunction ActivationFunction = new SigmoidActivation();
         public IWeightInitializer WeightInitializer = new RandomWeightInitializer();
         public IAccelerator Accelerator = new NoAccelerator();
         public Parallelizer Parallelizer;

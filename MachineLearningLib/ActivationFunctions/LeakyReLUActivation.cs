@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MachineLearningLib.ActivationFunctions
 {
-    public class LeakyReLU : IActivationFunction
+    public class LeakyReLUActivation : IActivationFunction
     {
         float alpha = 0.1f;
 
-        public LeakyReLU(float alpha = 0.01f)
+        public LeakyReLUActivation(float alpha = 0.01f)
         {
             this.alpha = alpha;
         }
