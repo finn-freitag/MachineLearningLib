@@ -1,9 +1,13 @@
 ﻿using MachineLearningLib.Accelerators;
 using MachineLearningLib.ActivationFunctions;
+using MachineLearningLib.Analysers;
 using MachineLearningLib.NeuralNetwork;
+using MachineLearningLib.Optimizers;
+using MachineLearningLib.Parallelizers;
 using MachineLearningLib.WeightInitializers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,22 +23,32 @@ namespace MLLTesterCMD
         {
             network = NetworkHolder.Create()
                 .Use(new XavierWeightInitializer())
+                .Use(ParallelForParallelizer.Parallelizer)
+                .Use(new ReLU())
+                .Use(new AdaGradOptimizer())
                 .Stack(new InputLayer(imageWidth * imageHeight))
                 .Stack(new Layer(128))
                 .Stack(new Layer(64))
+                .Use(new Sigmoid())
                 .Stack(new OutputLayer(10))
                 .Build();
         }
 
         public void Train(DigitData[] data, int epochs, float learningRate = 0.01f)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             for(int j = 0; j < epochs; j++)
             {
                 for (int i = 0; i < data.Length; i++)
                 {
                     network.Train(Prepare(data[i].Data), GetDigitArrayFromDigit(data[i].Digit), 2, learningRate);
                     if (i % 1000 == 0)
-                        Console.WriteLine("Epoch: " + j + "/" + epochs + ", Cycle: " + i + "/" + data.Length);
+                    {
+                        sw.Stop();
+                        Console.WriteLine("Epoch: " + j + "/" + epochs + ", Cycle: " + i + "/" + data.Length + ", Average train time: " + sw.ElapsedMilliseconds);
+                        sw.Restart();
+                    }
                 }
             }
         }

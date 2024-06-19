@@ -1,5 +1,6 @@
 ﻿using MachineLearningLib.Accelerators;
 using MachineLearningLib.ActivationFunctions;
+using MachineLearningLib.Optimizers;
 using MachineLearningLib.Parallelizers;
 using MachineLearningLib.WeightInitializers;
 using System;
@@ -25,9 +26,11 @@ namespace MachineLearningLib.NeuralNetwork
         public IActivationFunction ActivationFunction = new Sigmoid();
         public IWeightInitializer WeightInitializer = new RandomWeightInitializer();
         public IAccelerator Accelerator = new NoAccelerator();
+        public IOptimizer Optimizer = new NoOptimizer();
         public Parallelizer Parallelizer;
 
-        public object Tag;
+        public object Tag = null;
+        public object OptimizerData = null;
 
         public Layer(int neurons)
         {
@@ -70,8 +73,7 @@ namespace MachineLearningLib.NeuralNetwork
             {
                 Errors[i] = Accelerator.DotProductT(FollowingLayer.Errors, FollowingLayer.Weights, i);
                 Errors[i] *= ActivationFunction.Derivative(NeuronsSum[i]);
-                Weights[i] = Accelerator.Add(Weights[i], Accelerator.Multiply(learningRate * Errors[i], PreviousLayer.NeuronsAF));
-                Biases[i] += learningRate * Errors[i];
+                Optimizer.Train(this, i, Weights, Biases, Errors, PreviousLayer.NeuronsAF, learningRate);
             });
             PreviousLayer.Train(learningRate);
         }

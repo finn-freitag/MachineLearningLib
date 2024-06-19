@@ -11,8 +11,8 @@ namespace MLLTesterCMD
     {
         public static void DTMain()
         {
-            string imagePath = "mnist\\train-images.idx3-ubyte";
-            string labelPath = "mnist\\train-labels.idx1-ubyte";
+            string imagePath = "mnist\\t10k-images.idx3-ubyte";
+            string labelPath = "mnist\\t10k-labels.idx1-ubyte";
             string weightPath = "weights.dat";
 
             Console.WriteLine("Digit trainer:");
@@ -24,7 +24,7 @@ namespace MLLTesterCMD
 
             DigitRecognition recognizer = new DigitRecognition(data[0].Width, data[0].Height);
             //recognizer.Load(new MemoryStream(File.ReadAllBytes(weightPath)));
-            recognizer.Train(data, 10, 0.01f);
+            recognizer.Train(data, 10, 0.0001f);
 
             Console.WriteLine();
             Console.WriteLine("Training done.");

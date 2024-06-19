@@ -11,8 +11,8 @@ namespace MLLTesterCMD
     {
         static void Main(string[] args)
         {
-            XORExample.XORMain();
-            //DigitTrainer.DTMain();
+            //XORExample.XORMain();
+            DigitTrainer.DTMain();
             //DigitClassifier.DCMain();
 
             Console.ReadKey();

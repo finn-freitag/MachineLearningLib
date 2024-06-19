@@ -72,6 +72,7 @@ namespace MachineLearningLib.NeuralNetwork
             IActivationFunction currentAF = null;
             IWeightInitializer currentWI = null;
             IAccelerator currentAC = null;
+            IOptimizer currentOP = null;
             Parallelizer currentPL = null;
 
             public Builder(NetworkHolder nh)
@@ -103,6 +104,12 @@ namespace MachineLearningLib.NeuralNetwork
                 return this;
             }
 
+            public Builder Use(IOptimizer optimizer)
+            {
+                currentOP = optimizer;
+                return this;
+            }
+
             public Builder Stack(Layer layer)
             {
                 if (currentAF != null)
@@ -113,6 +120,8 @@ namespace MachineLearningLib.NeuralNetwork
                     layer.Parallelizer = currentPL;
                 if (currentWI != null)
                     layer.WeightInitializer = currentWI;
+                if (currentOP != null)
+                    layer.Optimizer = currentOP;
 
                 layers.Add(layer);
 
