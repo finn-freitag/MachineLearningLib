@@ -53,9 +53,11 @@
     <Compile Include="IActivatable.cs" />
     <Compile Include="IActivationFunction.cs" />
     <Compile Include="IParallelizable.cs" />
+    <Compile Include="IUtilizer.cs" />
     <Compile Include="IWeightInitializable.cs" />
     <Compile Include="IWeightInitializer.cs" />
-    <Compile Include="NeuralNetwork\HiddenLayer.cs" />
+    <Compile Include="NeuralNetwork\ModularLayer.cs" />
+    <Compile Include="NeuralNetwork\ModularOutputLayer.cs" />
     <Compile Include="Parallelizer.cs" />
     <Compile Include="NeuralNetwork\InputLayer.cs" />
     <Compile Include="NeuralNetwork\Layer.cs" />

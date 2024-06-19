@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MachineLearningLib.NeuralNetwork
 {
-    public class ModularLayer : Layer, IActivatable, IWeightInitializable, IAccelerable, IParallelizable
+    public class ModularLayer : Layer, IActivatable, IWeightInitializable, IAccelerable, IParallelizable, IUtilizer
     {
         public IActivationFunction ActivationFunction { get; set; } = new SigmoidActivation();
         public IWeightInitializer WeightInitializer { get; set; } = new RandomWeightInitializer();
@@ -57,6 +57,18 @@ namespace MachineLearningLib.NeuralNetwork
                 Biases[i] += learningRate * Errors[i];
             });
             PreviousLayer.Train(learningRate);
+        }
+
+        public virtual void Use(object usable)
+        {
+            if (usable is IActivationFunction act)
+                ActivationFunction = act;
+            if(usable is IWeightInitializer wei)
+                WeightInitializer = wei;
+            if (usable is IAccelerator acc)
+                Accelerator = acc;
+            if (usable is Parallelizer par)
+                Parallelizer = par;
         }
     }
 }

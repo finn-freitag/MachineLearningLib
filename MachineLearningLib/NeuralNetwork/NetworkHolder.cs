@@ -69,50 +69,24 @@ namespace MachineLearningLib.NeuralNetwork
             NetworkHolder nh;
             List<Layer> layers = new List<Layer>();
 
-            IActivationFunction currentAF = null;
-            IWeightInitializer currentWI = null;
-            IAccelerator currentAC = null;
-            Parallelizer currentPL = null;
+            List<object> usables = new List<object>();
 
             public Builder(NetworkHolder nh)
             {
                 this.nh = nh;
             }
 
-            public Builder Use(IActivationFunction activationFunction)
+            public Builder Use(object usable)
             {
-                currentAF = activationFunction;
-                return this;
-            }
-
-            public Builder Use(IAccelerator accelerator)
-            {
-                currentAC = accelerator;
-                return this;
-            }
-
-            public Builder Use(Parallelizer parallelizer)
-            {
-                currentPL = parallelizer;
-                return this;
-            }
-
-            public Builder Use(IWeightInitializer weightInitializer)
-            {
-                currentWI = weightInitializer;
+                usables.Add(usable);
                 return this;
             }
 
             public Builder Stack(Layer layer)
             {
-                if (currentAF != null && layer is IActivatable layerACT)
-                    layerACT.ActivationFunction = currentAF;
-                if (currentAC != null && layer is IAccelerable layerACC)
-                    layerACC.Accelerator = currentAC;
-                if (currentPL != null && layer is IParallelizable layerPAR)
-                    layerPAR.Parallelizer = currentPL;
-                if (currentWI != null && layer is IWeightInitializable layerWEI)
-                    layerWEI.WeightInitializer = currentWI;
+                if (layer is IUtilizer utilizer)
+                    for (int i = 0; i < usables.Count; i++)
+                        utilizer.Use(usables[i]);
 
                 layers.Add(layer);
 
