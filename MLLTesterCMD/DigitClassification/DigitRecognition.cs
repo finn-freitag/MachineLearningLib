@@ -20,9 +20,9 @@ namespace MLLTesterCMD
             network = NetworkHolder.Create()
                 .Use(new XavierWeightInitializer())
                 .Stack(new InputLayer(imageWidth * imageHeight))
-                .Stack(new Layer(128))
-                .Stack(new Layer(64))
-                .Stack(new OutputLayer(10))
+                .Stack(new ModularLayer(128))
+                .Stack(new ModularLayer(64))
+                .Stack(new ModularOutputLayer(10))
                 .Build();
         }
 

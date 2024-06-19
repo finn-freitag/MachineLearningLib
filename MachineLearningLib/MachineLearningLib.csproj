@@ -48,9 +48,14 @@
     <Compile Include="ActivationFunctions\SigmoidActivation.cs" />
     <Compile Include="ActivationFunctions\TanhActivation.cs" />
     <Compile Include="Analysers\BenchmarkLayer.cs" />
+    <Compile Include="IAcceleratable.cs" />
     <Compile Include="IAccelerator.cs" />
+    <Compile Include="IActivatable.cs" />
     <Compile Include="IActivationFunction.cs" />
+    <Compile Include="IParallelizable.cs" />
+    <Compile Include="IWeightInitializable.cs" />
     <Compile Include="IWeightInitializer.cs" />
+    <Compile Include="NeuralNetwork\HiddenLayer.cs" />
     <Compile Include="Parallelizer.cs" />
     <Compile Include="NeuralNetwork\InputLayer.cs" />
     <Compile Include="NeuralNetwork\Layer.cs" />

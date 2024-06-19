@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MachineLearningLib.ActivationFunctions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,22 +29,32 @@ namespace MachineLearningLib.NeuralNetwork
 
         public override void Calculate()
         {
-            Parallelizer(0, NeuronsSum.Length, (i) =>
+            var sigmoid = new SigmoidActivation();
+            for (int i = 0; i < NeuronsSum.Length; i++)
             {
-                NeuronsSum[i] = Accelerator.DotProduct(PreviousLayer.NeuronsAF, Weights[i]);
-                NeuronsSum[i] += Biases[i];
-                NeuronsAF[i] = ActivationFunction.Evaluate(NeuronsSum[i]);
-            });
+                float sum = 0f;
+                for (int j = 0; j < PreviousLayer.NeuronsSum.Length; j++)
+                {
+                    sum += Weights[i][j] * PreviousLayer.NeuronsAF[j];
+                }
+                sum += Biases[i];
+                NeuronsSum[i] = sum;
+                NeuronsAF[i] = sigmoid.Evaluate(sum);
+            }
         }
 
         public override void Train(float learningRate)
         {
-            Parallelizer(0, NeuronsSum.Length, (i) =>
+            var sigmoid = new SigmoidActivation();
+            for (int i = 0; i < NeuronsSum.Length; i++)
             {
-                Errors[i] = (desiredOutputs[i] - NeuronsAF[i]) * ActivationFunction.Derivative(NeuronsSum[i]);
-                Weights[i] = Accelerator.Add(Weights[i], Accelerator.Multiply(learningRate * Errors[i], PreviousLayer.NeuronsAF));
+                Errors[i] = (desiredOutputs[i] - NeuronsAF[i]) * sigmoid.Derivative(NeuronsSum[i]);
+                for (int j = 0; j < PreviousLayer.NeuronsAF.Length; j++)
+                {
+                    Weights[i][j] += learningRate * Errors[i] * PreviousLayer.NeuronsAF[j];
+                }
                 Biases[i] += learningRate * Errors[i];
-            });
+            }
             PreviousLayer.Train(learningRate);
         }
     }

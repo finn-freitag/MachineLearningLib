@@ -17,7 +17,7 @@ namespace MLLTesterCMD
             NetworkHolder nh = NetworkHolder.Create()
                 .Stack(new InputLayer(2))
                 .Stack(benchmarkLayer)
-                .Stack(new OutputLayer(1))
+                .Stack(new ModularOutputLayer(1))
                 .Build();
 
             float[][] inputs = new float[][]

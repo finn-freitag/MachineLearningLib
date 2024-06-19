@@ -105,14 +105,14 @@ namespace MachineLearningLib.NeuralNetwork
 
             public Builder Stack(Layer layer)
             {
-                if (currentAF != null)
-                    layer.ActivationFunction = currentAF;
-                if (currentAC != null)
-                    layer.Accelerator = currentAC;
-                if (currentPL != null)
-                    layer.Parallelizer = currentPL;
-                if (currentWI != null)
-                    layer.WeightInitializer = currentWI;
+                if (currentAF != null && layer is IActivatable layerACT)
+                    layerACT.ActivationFunction = currentAF;
+                if (currentAC != null && layer is IAccelerable layerACC)
+                    layerACC.Accelerator = currentAC;
+                if (currentPL != null && layer is IParallelizable layerPAR)
+                    layerPAR.Parallelizer = currentPL;
+                if (currentWI != null && layer is IWeightInitializable layerWEI)
+                    layerWEI.WeightInitializer = currentWI;
 
                 layers.Add(layer);
 

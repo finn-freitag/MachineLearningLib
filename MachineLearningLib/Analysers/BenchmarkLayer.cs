@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MachineLearningLib.Analysers
 {
-    public class BenchmarkLayer : Layer
+    public class BenchmarkLayer : ModularLayer
     {
         public int CalculateCounter { get; private set; } = 0;
         long CalculateEntireTime = 0;
