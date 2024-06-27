@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace MachineLearningLib.Parallelizers
 {
-    public static class ParallelForParallelizer
+    public class ParallelForParallelizer : IParallelizer
     {
-        public static void Parallelizer(int from, int to, Action<int> action) => Parallel.For(from, to, action);
+        public void Parallelizer(int from, int to, Action<int> action) => Parallel.For(from, to, action);
     }
 }

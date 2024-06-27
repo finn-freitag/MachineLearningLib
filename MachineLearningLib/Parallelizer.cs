@@ -6,5 +6,8 @@ using System.Threading.Tasks;
 
 namespace MachineLearningLib
 {
-    public delegate void Parallelizer(int inclusiveFrom, int exclusiveTo, Action<int> action);
+    public interface IParallelizer
+    {
+        void Parallelizer(int from, int to, Action<int> action);
+    }
 }

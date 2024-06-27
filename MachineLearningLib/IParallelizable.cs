@@ -8,6 +8,6 @@ namespace MachineLearningLib
 {
     public interface IParallelizable
     {
-        Parallelizer Parallelizer { get; set; }
+        IParallelizer Parallelizer { get; set; }
     }
 }
