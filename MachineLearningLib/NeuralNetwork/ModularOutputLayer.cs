@@ -21,6 +21,21 @@ namespace MachineLearningLib.NeuralNetwork
         {
         }
 
+        public override void InitFromPreviousLayer()
+        {
+            WeightInitializer.SetLayer(this);
+            Weights = new float[NeuronsSum.Length][];
+            Parallelizer.Parallelizer(0, NeuronsSum.Length, (i) =>
+            {
+                Weights[i] = new float[PreviousLayer.NeuronsSum.Length];
+                Biases[i] = WeightInitializer.GetInitialWeight();
+                for (int j = 0; j < PreviousLayer.NeuronsSum.Length; j++)
+                {
+                    Weights[i][j] = WeightInitializer.GetInitialWeight();
+                }
+            });
+        }
+
         public override void Calculate()
         {
             Parallelizer.Parallelizer(0, NeuronsSum.Length, (i) =>

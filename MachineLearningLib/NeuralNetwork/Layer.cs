@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MachineLearningLib.NeuralNetwork
 {
-    public class Layer
+    public abstract class Layer
     {
         public float[] Biases;
         public float[] NeuronsSum;
@@ -32,57 +32,11 @@ namespace MachineLearningLib.NeuralNetwork
             Errors = new float[neurons];
         }
 
-        public virtual void InitFromPreviousLayer()
-        {
-            Random r = new Random();
-            Weights = new float[NeuronsSum.Length][];
-            for(int i = 0; i < NeuronsSum.Length; i++)
-            {
-                Weights[i] = new float[PreviousLayer.NeuronsSum.Length];
-                Biases[i] = (float)r.NextDouble();
-                for (int j = 0; j < PreviousLayer.NeuronsSum.Length; j++)
-                {
-                    Weights[i][j] = (float)r.NextDouble();
-                }
-            }
-        }
+        public abstract void InitFromPreviousLayer();
 
-        public virtual void Calculate()
-        {
-            var sigmoid = new SigmoidActivation();
-            for(int i = 0; i < NeuronsSum.Length; i++)
-            {
-                float sum = 0f;
-                for(int j = 0; j < PreviousLayer.NeuronsSum.Length; j++)
-                {
-                    sum += Weights[i][j] * PreviousLayer.NeuronsAF[j];
-                }
-                sum += Biases[i];
-                NeuronsSum[i] = sum;
-                NeuronsAF[i] = sigmoid.Evaluate(sum);
-            }
-            FollowingLayer.Calculate();
-        }
+        public abstract void Calculate();
 
-        public virtual void Train(float learningRate)
-        {
-            var sigmoid = new SigmoidActivation();
-            for (int i = 0; i < NeuronsSum.Length; i++)
-            {
-                float error = 0f;
-                for(int j = 0; j < FollowingLayer.Errors.Length; j++)
-                {
-                    error += FollowingLayer.Errors[j] * FollowingLayer.Weights[j][i];
-                }
-                Errors[i] = error * sigmoid.Derivative(NeuronsSum[i]);
-                for(int j = 0; j < PreviousLayer.NeuronsAF.Length; j++)
-                {
-                    Weights[i][j] += learningRate * Errors[i] * PreviousLayer.NeuronsAF[j];
-                }
-                Biases[i] += learningRate * Errors[i];
-            }
-            PreviousLayer.Train(learningRate);
-        }
+        public abstract void Train(float learningRate);
 
         public virtual void Save(BinaryWriter bw)
         {

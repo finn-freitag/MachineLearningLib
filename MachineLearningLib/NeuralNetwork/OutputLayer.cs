@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MachineLearningLib.NeuralNetwork
 {
-    public class OutputLayer : Layer
+    public abstract class OutputLayer : Layer
     {
         protected float[] desiredOutputs;
 
@@ -27,35 +27,8 @@ namespace MachineLearningLib.NeuralNetwork
             return NeuronsAF;
         }
 
-        public override void Calculate()
-        {
-            var sigmoid = new SigmoidActivation();
-            for (int i = 0; i < NeuronsSum.Length; i++)
-            {
-                float sum = 0f;
-                for (int j = 0; j < PreviousLayer.NeuronsSum.Length; j++)
-                {
-                    sum += Weights[i][j] * PreviousLayer.NeuronsAF[j];
-                }
-                sum += Biases[i];
-                NeuronsSum[i] = sum;
-                NeuronsAF[i] = sigmoid.Evaluate(sum);
-            }
-        }
+        public abstract override void Calculate();
 
-        public override void Train(float learningRate)
-        {
-            var sigmoid = new SigmoidActivation();
-            for (int i = 0; i < NeuronsSum.Length; i++)
-            {
-                Errors[i] = (desiredOutputs[i] - NeuronsAF[i]) * sigmoid.Derivative(NeuronsSum[i]);
-                for (int j = 0; j < PreviousLayer.NeuronsAF.Length; j++)
-                {
-                    Weights[i][j] += learningRate * Errors[i] * PreviousLayer.NeuronsAF[j];
-                }
-                Biases[i] += learningRate * Errors[i];
-            }
-            PreviousLayer.Train(learningRate);
-        }
+        public abstract override void Train(float learningRate);
     }
 }
